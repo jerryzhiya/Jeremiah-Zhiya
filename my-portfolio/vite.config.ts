@@ -7,5 +7,5 @@ const isGhPages = Boolean(process.env.GITHUB_PAGES);
 
 export default defineConfig({
   plugins: [react()],
-  base: isVercel ? '/' : isGhPages ? '/Virtual_Assitant/' : './'
+  base: isVercel ? '/' : isGhPages ? '/Jeremiah-Zhiya/' : './'
 });
