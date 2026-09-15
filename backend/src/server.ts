@@ -18,11 +18,27 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Dynamic CORS configuration for local + production
+// Define explicit allowed origins (NO trailing slashes)
+const allowedOrigins = [
+  'https://jeremiah-zhiya.vercel.app',
+  'http://localhost:3000',
+  process.env.CLIENT_URL?.replace(/\/$/, ''), // Strips trailing slash if present
+].filter(Boolean);
+
+// Dynamic CORS configuration
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'https://jeremiah-zhiya.vercel.app/',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, or Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
