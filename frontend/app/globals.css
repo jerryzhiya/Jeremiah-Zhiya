@@ -1,0 +1,33 @@
+
+@import "tailwindcss";
+
+/* 1. Define base variables for Light Mode */
+:root {
+  --background: #f4f7f3;
+  --foreground: #1c2420;
+}
+
+/* 2. Define dark mode variable overrides when .dark class is active */
+@variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --background: #121815;
+  --foreground: #e5e9e3;
+}
+
+html {
+  data-scroll-behavior: smooth;
+}
+
+/* 3. Apply variables to body */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom glow utility */
+.glow-effect {
+  box-shadow: 0 0 50px -10px rgba(53, 88, 67, 0.15);
+}

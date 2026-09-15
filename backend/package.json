@@ -1,0 +1,50 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "server.js",
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "node node_modules/prisma/build/index.js generate",
+    "prisma:push": "node node_modules/prisma/build/index.js db push",
+    "prisma:studio": "node node_modules/prisma/build/index.js studio",
+    "prisma:seed": "tsx prisma/seed.ts"
+  },
+  "keywords": [],
+  "author": "Jerry Glitter",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.0",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.3.0",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^10.0.10"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^22.20.2",
+    "@types/nodemailer": "^8.0.1",
+    "nodemon": "^3.1.14",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

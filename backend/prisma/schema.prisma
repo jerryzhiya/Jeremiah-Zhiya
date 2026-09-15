@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  SCHOOL_SYSTEM
+  CLIENT_WORK
+  ORGANIZATION
+  PERSONAL_WORK
+}
+
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String   @unique
+  description String
+  category    Category
+  techStack   String[]
+  liveUrl     String?
+  githubUrl   String?
+  imageUrl    String?  // 👈 Added image field
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BlogPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  slug      String   @unique
+  summary   String
+  content   String
+  tags      String[]
+  readTime  String   @default("5 min read")
+  imageUrl  String?  
+  published Boolean  @default(true)
+  likes     Int @default(0)
+  comments  Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  author     String
+  content    String
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogPostId String @db.ObjectId
+  createdAt  DateTime @default(now())
+}
+
