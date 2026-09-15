@@ -10,7 +10,7 @@ interface BlogPostPageProps {
 
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/blog/${slug}`, {
+    const res = await fetch(`https://jeremiah-zhiya.onrender.com/api/blog/${slug}`, {
       cache: 'no-store', // Ensures fresh data on request
     });
 
