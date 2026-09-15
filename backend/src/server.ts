@@ -21,7 +21,7 @@ if (!fs.existsSync(uploadsDir)) {
 // Dynamic CORS configuration for local + production
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: process.env.CLIENT_URL || 'https://jeremiah-zhiya.vercel.app/',
     credentials: true,
   })
 );
