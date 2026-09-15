@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'NEXT_PUBLIC_API_URL=https://jeremiah-zhiya.onrender.com/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
