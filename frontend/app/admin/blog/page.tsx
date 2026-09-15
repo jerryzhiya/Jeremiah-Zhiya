@@ -95,7 +95,7 @@ export default function AdminBlogPage() {
     data.append('readTime', formData.readTime);
     data.append('published', String(formData.published));
     if (formData.imageUrl) data.append('imageUrl', formData.imageUrl);
-    if (file) data.append('image', file);
+    if (file) data.append('coverImage', file);
 
     try {
       if (editingId) {
