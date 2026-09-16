@@ -25,7 +25,7 @@ export default function BlogInteractions({ slug, initialLikes = 0 }: BlogInterac
 
   // Fetch comments on load
   useEffect(() => {
-    fetch(`http://localhost:5000/api/blog/${slug}/comments`)
+    fetch(`https://jeremiah-zhiya.onrender.com/api/blog/${slug}/comments`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -42,7 +42,7 @@ export default function BlogInteractions({ slug, initialLikes = 0 }: BlogInterac
     setHasLiked(true);
 
     try {
-      await fetch(`http://localhost:5000/api/blog/${slug}/like`, { method: 'POST' });
+      await fetch(`https://jeremiah-zhiya.onrender.com/api/blog/${slug}/like`, { method: 'POST' });
     } catch (err) {
       console.error('Like failed:', err);
     }
@@ -56,7 +56,7 @@ export default function BlogInteractions({ slug, initialLikes = 0 }: BlogInterac
     setSubmitting(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/blog/${slug}/comments`, {
+      const res = await fetch(`https://jeremiah-zhiya.onrender.com/api/blog/${slug}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ author, content }),
