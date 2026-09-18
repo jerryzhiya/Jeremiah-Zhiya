@@ -17,8 +17,10 @@ export const loginAdmin: RequestHandler = asyncHandler(
 
     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user || user.role !== 'admin') {
-      res.status(401).json({ message: 'Invalid credentials' });
+    // Handle case-insensitive role check (supports both 'ADMIN' and 'admin')
+    const userRole = user?.role?.toUpperCase();
+    if (!user || userRole !== 'ADMIN') {
+      res.status(401).json({ message: 'Invalid credentials or unauthorized access' });
       return;
     }
 
@@ -28,9 +30,9 @@ export const loginAdmin: RequestHandler = asyncHandler(
       return;
     }
 
-    // Generate JWT Token
+    // Include normalized uppercase role in JWT payload
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: 'ADMIN' },
       process.env.JWT_SECRET || 'secret_key_change_me',
       { expiresIn: '7d' }
     );
@@ -41,6 +43,7 @@ export const loginAdmin: RequestHandler = asyncHandler(
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
   }

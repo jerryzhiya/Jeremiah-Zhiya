@@ -1,12 +1,22 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL || 'jerryzhiya574@gmail.com';
-  const rawPassword = process.env.ADMIN_PASSWORD || 'SUPERlove1$';
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const rawPassword = process.env.ADMIN_PASSWORD;
+
+  // Strict check: Fail early if environment variables are missing
+  if (!adminEmail || !rawPassword) {
+    throw new Error(
+      '❌ Missing ADMIN_EMAIL or ADMIN_PASSWORD in environment variables (.env).'
+    );
+  }
 
   // Check if admin user already exists
   const existingAdmin = await prisma.user.findUnique({
@@ -27,7 +37,7 @@ async function main() {
       name: 'Jeremiah Zhiya',
       email: adminEmail,
       passwordHash,
-      role: 'admin',
+      role: 'ADMIN', // Set uppercase to match updated auth middleware/controller
     },
   });
 
@@ -36,7 +46,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error('❌ Error seeding database:', e);
+    console.error('❌ Error seeding database:', e.message || e);
     process.exit(1);
   })
   .finally(async () => {
