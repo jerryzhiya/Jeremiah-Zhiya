@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import SocialShare from '@/app/component/socials/page';
 import BlogInteractions from '@/app/component/blog/BlogInteraction';
 
@@ -20,6 +21,55 @@ async function getBlogPost(slug: string) {
     console.error('Error fetching blog post:', error);
     return null;
   }
+}
+
+// Dynamic Open Graph & Twitter Metadata Generator
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
+
+  if (!post) {
+    return {
+      title: 'Post Not Found | Jeremiah Zhiya',
+    };
+  }
+
+  // Ensure image URL is absolute for social platforms
+  const imageUrl = post.imageUrl
+    ? post.imageUrl.startsWith('http')
+      ? post.imageUrl
+      : `https://jeremiah-zhiya.onrender.com${post.imageUrl}`
+    : 'https://jeremiah-zhiya.onrender.com/default-og-image.jpg'; // Fallback image
+
+  const description = post.summary || post.content?.slice(0, 160) || 'Blog post by Jeremiah Zhiya';
+
+  return {
+    title: `${post.title} | Jeremiah Zhiya`,
+    description: description,
+    openGraph: {
+      title: post.title,
+      description: description,
+      url: `https://jeremiah-zhiya.onrender.com/blog/${slug}`,
+      siteName: 'Jeremiah Zhiya Portfolio',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      type: 'article',
+      publishedTime: post.createdAt,
+      authors: ['Jeremiah Zhiya'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: description,
+      images: [imageUrl],
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
