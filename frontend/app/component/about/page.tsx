@@ -1,17 +1,56 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Terminal, Code, Cpu, Globe } from 'lucide-react';
 
+interface AboutData {
+  name: string;
+  title: string;
+  location: string;
+  bio: string;
+  secondaryBio?: string;
+}
+
 export default function AboutPage() {
+  const [about, setAbout] = useState<AboutData>({
+    name: 'Jeremiah Zhiya',
+    title: 'Full-Stack Software Engineer building scalable systems and modern web platforms.',
+    location: 'Based in Nigeria • Remote Worldwide',
+    bio: 'I specialize in building full-stack applications using Next.js, Express, TypeScript, and MongoDB/Prisma. My focus is on writing clean, maintainable architecture and engineering seamless end-to-end digital experiences.',
+    secondaryBio: 'Based in Nigeria and working with clients worldwide, I turn complex business requirements into robust digital infrastructure.',
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const res = await fetch('https://jeremiah-zhiya.onrender.com/api/about', {
+          cache: 'no-store',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data) setAbout(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic about section:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutData();
+  }, []);
+
   return (
     <main className="max-w-4xl mx-auto px-6 py-16 text-[#1e2723] dark:text-[#e5e9e3] transition-colors duration-300">
       <div className="mb-12">
         <h1 className="text-4xl font-bold font-serif mb-4 text-[#1c2420] dark:text-[#e5e9e3]">
-          About Me
+          About {about.name}
         </h1>
         <p className="text-[#52635a] dark:text-[#a3b3a9] text-lg">
-          Full-Stack Software Engineer building scalable systems and modern web platforms.
+          {about.title}
         </p>
       </div>
 
@@ -22,11 +61,13 @@ export default function AboutPage() {
             <Terminal className="w-6 h-6 text-[#355843] dark:text-[#63a375]" /> Background & Experience
           </h2>
           <p className="leading-relaxed text-[#52635a] dark:text-[#a3b3a9] mb-4">
-            I specialize in building full-stack applications using Next.js, Express, TypeScript, and MongoDB/Prisma. My focus is on writing clean, maintainable architecture and engineering seamless end-to-end digital experiences.
+            {about.bio}
           </p>
-          <p className="leading-relaxed text-[#52635a] dark:text-[#a3b3a9]">
-            Based in Nigeria and working with clients worldwide, I turn complex business requirements into robust digital infrastructure.
-          </p>
+          {about.secondaryBio && (
+            <p className="leading-relaxed text-[#52635a] dark:text-[#a3b3a9]">
+              {about.secondaryBio}
+            </p>
+          )}
         </section>
 
         {/* Core Capabilities */}

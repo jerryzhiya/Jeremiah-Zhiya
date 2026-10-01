@@ -10,7 +10,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
       {/* Hero Section */}
       <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-20 sm:mb-28">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -26,14 +26,14 @@ export default function Home() {
             Specialized in designing and engineering high-impact web applications, robust APIs, and scalable cloud systems.
           </p>
           <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-            <Link 
-              href="/component/contact" 
+            <Link
+              href="/component/contact"
               className="px-6 py-3.5 rounded-full bg-[#355843] dark:bg-[#436e54] hover:bg-[#284434] dark:hover:bg-[#355843] text-white font-medium transition flex items-center justify-center gap-2 text-sm"
             >
               Schedule Consultation <ArrowUpRight className="w-4 h-4" />
             </Link>
-            <Link 
-              href="/component/projects" 
+            <Link
+              href="/component/projects"
               className="px-6 py-3.5 rounded-full bg-[#d7e0d4] dark:bg-[#1f2a24] hover:bg-[#cbd6c8] dark:hover:bg-[#2a3830] text-[#2b3531] dark:text-[#e5e9e3] border border-transparent dark:border-[#2f3e36] font-medium transition text-sm text-center"
             >
               Explore Projects
@@ -42,7 +42,7 @@ export default function Home() {
         </motion.div>
 
         {/* Hero Profile Card */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -50,10 +50,11 @@ export default function Home() {
         >
           <div className="w-full h-64 sm:h-80 rounded-2xl mb-6 overflow-hidden relative shadow-inner">
             <Image
-              src="/preview.jpeg" 
+              src="/preview.jpeg"
               alt="Jeremiah Zhiya"
               fill
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover object-top hover:scale-105 transition-transform duration-500"
             />
           </div>
@@ -71,8 +72,8 @@ export default function Home() {
         <p className="text-[#d5e0d9] dark:text-[#b4c7bb] max-w-xl mx-auto mb-8 text-sm md:text-base">
           Let's discuss your project goals, technical requirements, and backend architecture.
         </p>
-        <Link 
-          href="/component/contact" 
+        <Link
+          href="/component/contact"
           className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-[#e5e9e3] text-[#284434] font-bold hover:bg-[#eaf0eb] dark:hover:bg-white transition w-full sm:w-auto"
         >
           Get In Touch <Send className="w-4 h-4" />

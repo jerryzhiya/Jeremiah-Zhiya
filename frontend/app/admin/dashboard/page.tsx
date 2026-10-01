@@ -1,77 +1,110 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { UserCheck, Wrench, ArrowRight, FileText, FolderGit2 } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) {
-      router.push('/admin/login');
-    } else {
-      setIsAuthenticated(true);
-    }
-  }, [router]);
-
-  if (!isAuthenticated) return null;
-
   return (
-    <main className="max-w-5xl mx-auto px-6 pt-28 pb-16 text-[#e2e8f0]">
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-serif font-bold text-[#f1f5f9]">
-          Admin Management Hub
+    <main className="max-w-5xl mx-auto px-6 pt-28 pb-16 text-[#1e2723] dark:text-[#e5e9e3]">
+      <div className="mb-10">
+        <h1 className="text-3xl font-serif font-bold mb-2 text-[#1c2420] dark:text-[#e5e9e3]">
+          Admin Management Panel
         </h1>
-        <button
-          onClick={() => {
-            localStorage.removeItem('admin_token');
-            router.push('/admin/login');
-          }}
-          className="text-xs font-bold text-red-400 bg-red-950/40 hover:bg-red-900/60 border border-red-800/50 px-4 py-2 rounded-xl transition"
-        >
-          Logout
-        </button>
+        <p className="text-sm text-[#52635a] dark:text-[#a3b3a9]">
+          Manage your portfolio content, technical skill sets, dynamic blog, and project showcases.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Link
-          href="/admin/projects"
-          className="p-6 bg-[#18221c] border border-[#2d3e33] rounded-2xl hover:border-[#4ade80]/50 hover:bg-[#1f2d25] transition group"
-        >
-          <h2 className="text-xl font-bold mb-2 text-[#f1f5f9] group-hover:text-[#4ade80] transition-colors">
-            Projects
-          </h2>
-          <p className="text-sm text-[#94a3b8]">
-            Add, edit, or remove portfolio projects.
-          </p>
-        </Link>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* 1. SEPARATE ABOUT CARD */}
+        <div className="p-6 bg-[#e5e9e3] dark:bg-[#1a231e] rounded-2xl border border-[#cbd4c9] dark:border-[#2f3e36] flex flex-col justify-between transition-colors">
+          <div>
+            <div className="flex items-center gap-3 mb-3 text-[#355843] dark:text-[#63a375]">
+              <UserCheck className="w-6 h-6" />
+              <h2 className="text-xl font-bold text-[#1c2420] dark:text-[#e5e9e3]">
+                About Me Profile
+              </h2>
+            </div>
+            <p className="text-sm text-[#52635a] dark:text-[#a3b3a9] mb-6 leading-relaxed">
+              Update your biography, current title, work status, location, and overview paragraphs displayed on the main About page.
+            </p>
+          </div>
+          <Link
+            href="/admin/about"
+            className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
+          >
+            <span>Edit Profile Info</span>
+            <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
+          </Link>
+        </div>
 
-        <Link
-          href="/admin/blog"
-          className="p-6 bg-[#18221c] border border-[#2d3e33] rounded-2xl hover:border-[#4ade80]/50 hover:bg-[#1f2d25] transition group"
-        >
-          <h2 className="text-xl font-bold mb-2 text-[#f1f5f9] group-hover:text-[#4ade80] transition-colors">
-            Blog Posts
-          </h2>
-          <p className="text-sm text-[#94a3b8]">
-            Write and publish new technical articles.
-          </p>
-        </Link>
+        {/* 2. SEPARATE SKILLS CARD */}
+        <div className="p-6 bg-[#e5e9e3] dark:bg-[#1a231e] rounded-2xl border border-[#cbd4c9] dark:border-[#2f3e36] flex flex-col justify-between transition-colors">
+          <div>
+            <div className="flex items-center gap-3 mb-3 text-[#355843] dark:text-[#63a375]">
+              <Wrench className="w-6 h-6" />
+              <h2 className="text-xl font-bold text-[#1c2420] dark:text-[#e5e9e3]">
+                Core Technical Skills
+              </h2>
+            </div>
+            <p className="text-sm text-[#52635a] dark:text-[#a3b3a9] mb-6 leading-relaxed">
+              Add, update, or reorganize frontend frameworks, backend technologies, database ORMs, and developer tooling categories.
+            </p>
+          </div>
+          <Link
+            href="/admin/skills"
+            className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
+          >
+            <span>Manage Technical Skills</span>
+            <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
+          </Link>
+        </div>
 
-        <Link
-          href="/admin/skills"
-          className="p-6 bg-[#18221c] border border-[#2d3e33] rounded-2xl hover:border-[#4ade80]/50 hover:bg-[#1f2d25] transition group"
-        >
-          <h2 className="text-xl font-bold mb-2 text-[#f1f5f9] group-hover:text-[#4ade80] transition-colors">
-            Skills & About
-          </h2>
-          <p className="text-sm text-[#94a3b8]">
-            Update technical stack categories and bio.
-          </p>
-        </Link>
+        {/* 3. BLOG POSTS CARD */}
+        <div className="p-6 bg-[#e5e9e3] dark:bg-[#1a231e] rounded-2xl border border-[#cbd4c9] dark:border-[#2f3e36] flex flex-col justify-between transition-colors">
+          <div>
+            <div className="flex items-center gap-3 mb-3 text-[#355843] dark:text-[#63a375]">
+              <FileText className="w-6 h-6" />
+              <h2 className="text-xl font-bold text-[#1c2420] dark:text-[#e5e9e3]">
+                Blog Articles
+              </h2>
+            </div>
+            <p className="text-sm text-[#52635a] dark:text-[#a3b3a9] mb-6 leading-relaxed">
+              Create, edit, publish, and assign cover images to your technical articles and stories.
+            </p>
+          </div>
+          <Link
+            href="/admin/blog"
+            className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
+          >
+            <span>Manage Blog Posts</span>
+            <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
+          </Link>
+        </div>
+
+        {/* 4. PROJECTS CARD */}
+        <div className="p-6 bg-[#e5e9e3] dark:bg-[#1a231e] rounded-2xl border border-[#cbd4c9] dark:border-[#2f3e36] flex flex-col justify-between transition-colors">
+          <div>
+            <div className="flex items-center gap-3 mb-3 text-[#355843] dark:text-[#63a375]">
+              <FolderGit2 className="w-6 h-6" />
+              <h2 className="text-xl font-bold text-[#1c2420] dark:text-[#e5e9e3]">
+                Projects Showcase
+              </h2>
+            </div>
+            <p className="text-sm text-[#52635a] dark:text-[#a3b3a9] mb-6 leading-relaxed">
+              Add new full-stack project showcases, set repository/live URLs, and feature key builds.
+            </p>
+          </div>
+          <Link
+            href="/admin/projects"
+            className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
+          >
+            <span>Manage Projects</span>
+            <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
+          </Link>
+        </div>
+
       </div>
     </main>
   );
