@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
-    "build": "tsc",
+    "build":  "tsc",
     "start": "node dist/server.js",
     "prisma:generate": "node node_modules/prisma/build/index.js generate",
     "prisma:push": "node node_modules/prisma/build/index.js db push",
