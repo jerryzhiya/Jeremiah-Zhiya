@@ -21,22 +21,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1. Install pnpm FIRST so setup-node can find it
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      # 2. Setup Node 22 (clears deprecation warnings) with pnpm caching
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
-          cache-dependency-path: './frontend/pnpm-lock.yaml'
+          # Point cache to the root lockfile since it's a monorepo
+          cache-dependency-path: './pnpm-lock.yaml'
 
-      - name: Install Frontend Dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install Dependencies
+        run: pnpm install
 
       - name: Run Linter
         run: pnpm run lint
@@ -61,22 +60,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 1. Install pnpm FIRST
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      # 2. Setup Node 22
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
-          cache-dependency-path: './backend/pnpm-lock.yaml'
+          cache-dependency-path: './pnpm-lock.yaml'
 
-      - name: Install Backend Dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install Dependencies
+        run: pnpm install
 
       - name: Type Check TypeScript
         run: pnpm exec tsc --noEmit
