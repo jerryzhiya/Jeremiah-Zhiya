@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm' # Use 'npm' or 'yarn' if you aren't using pnpm
+
+      # 3. Install pnpm globally (Skip if using npm or yarn)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      # 4. Install dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 5. Run Linter
+      - name: Run Linter
+        run: pnpm run lint
+
+      # 6. Type Check TypeScript
+      - name: Run Type Check
+        run: pnpm exec tsc --noEmit
+
+      # 7. Build Project
+      - name: Build Project
+        run: pnpm run build
