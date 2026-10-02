@@ -7,39 +7,73 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-and-test:
+  # ==========================================
+  # JOB 1: Test & Check Frontend (Next.js)
+  # ==========================================
+  frontend-check:
+    name: Check Frontend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend # 👈 Directs commands to the frontend folder
 
     steps:
-      # 1. Checkout the repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm' # Use 'npm' or 'yarn' if you aren't using pnpm
+          cache: 'pnpm'
 
-      # 3. Install pnpm globally (Skip if using npm or yarn)
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      # 4. Install dependencies
-      - name: Install dependencies
+      - name: Install Frontend Dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5. Run Linter
       - name: Run Linter
         run: pnpm run lint
 
-      # 6. Type Check TypeScript
-      - name: Run Type Check
+      - name: Type Check TypeScript
         run: pnpm exec tsc --noEmit
 
-      # 7. Build Project
-      - name: Build Project
+      - name: Build Frontend
+        run: pnpm run build
+
+  # ==========================================
+  # JOB 2: Test & Check Backend (Express)
+  # ==========================================
+  backend-check:
+    name: Check Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend # 👈 Directs commands to the backend folder
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Backend Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type Check TypeScript
+        run: pnpm exec tsc --noEmit
+
+      - name: Build Backend
         run: pnpm run build
