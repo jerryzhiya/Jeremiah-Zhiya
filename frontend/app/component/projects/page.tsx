@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FolderGit2, ExternalLink, Code2, RefreshCw } from 'lucide-react';
 import { getProjects, Project } from '@/app/lib/api';
-
+import NextImage from 'next/image';
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,12 +16,15 @@ export default function ProjectsPage() {
     // Load fast cached projects first to bypass Render cold-starts
     const cachedData = localStorage.getItem('cached_projects');
     if (cachedData) {
-      try {
-        setProjects(JSON.parse(cachedData));
-        setLoading(false);
-      } catch (err) {
-        console.error('Failed to parse cached projects:', err);
-      }
+      requestAnimationFrame(() => {
+        try {
+          setProjects(JSON.parse(cachedData));
+          setLoading(false);
+        } catch (err) {
+          console.error('Failed to parse cached projects:', err);
+        }
+      })
+
     }
 
     // Fetch fresh projects from backend
@@ -32,8 +35,8 @@ export default function ProjectsPage() {
         // Sanitize legacy local development image URLs
         const sanitizedData = data.map((project) => ({
           ...project,
-          imageUrl: project.imageUrl?.includes('https://jeremiah-zhiya.onrender.com') 
-            ? undefined 
+          imageUrl: project.imageUrl?.includes('https://jeremiah-zhiya.onrender.com')
+            ? undefined
             : project.imageUrl,
         }));
 
@@ -72,9 +75,9 @@ export default function ProjectsPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((n) => (
-            <div 
-              key={n} 
-              className="h-96 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] animate-pulse border border-[#c8d4c4] dark:border-[#2f3e36]" 
+            <div
+              key={n}
+              className="h-96 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] animate-pulse border border-[#c8d4c4] dark:border-[#2f3e36]"
             />
           ))}
         </div>
@@ -108,7 +111,7 @@ export default function ProjectsPage() {
                 {/* Image Banner */}
                 {project.imageUrl && (
                   <div className="w-full h-48 sm:h-56 overflow-hidden rounded-2xl mb-6 relative bg-[#cbd6c8] dark:bg-[#28352e]">
-                    <img
+                    <NextImage
                       src={project.imageUrl}
                       alt={project.title}
                       className="w-full h-full object-cover hover:scale-105 transition duration-500"
@@ -124,10 +127,10 @@ export default function ProjectsPage() {
                   </span>
                   <div className="flex space-x-3 text-[#52635a] dark:text-[#a3b3a9]">
                     {project.githubUrl && (
-                      <a 
-                        href={project.githubUrl} 
-                        target="_blank" 
-                        rel="noreferrer" 
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
                         className="hover:text-[#1c2420] dark:hover:text-[#e5e9e3] transition-colors"
                         aria-label="GitHub Repository"
                       >
@@ -135,10 +138,10 @@ export default function ProjectsPage() {
                       </a>
                     )}
                     {project.liveUrl && (
-                      <a 
-                        href={project.liveUrl} 
-                        target="_blank" 
-                        rel="noreferrer" 
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
                         className="hover:text-[#1c2420] dark:hover:text-[#e5e9e3] transition-colors"
                         aria-label="Live Demo"
                       >
@@ -160,8 +163,8 @@ export default function ProjectsPage() {
               {/* Tech Stack Pills */}
               <div className="flex flex-wrap gap-2 pt-4 border-t border-[#c8d4c4] dark:border-[#2f3e36] transition-colors">
                 {project.techStack?.map((tech) => (
-                  <span 
-                    key={tech} 
+                  <span
+                    key={tech}
                     className="text-xs bg-[#cbd6c8] dark:bg-[#28352e] text-[#284434] dark:text-[#a3c9b1] border border-transparent dark:border-[#2f3e36] px-3 py-1 rounded-full font-medium transition-colors"
                   >
                     {tech}

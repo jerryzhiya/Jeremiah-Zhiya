@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Clock, Heart, MessageSquare } from 'lucide-react';
 import { getBlogPosts, BlogPost } from '@/app/lib/api';
+import NextImage from 'next/image';
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -62,7 +63,7 @@ export default function BlogPage() {
                 {/* Cover Image */}
                 {post.imageUrl && (
                   <div className="w-full h-48 sm:h-64 overflow-hidden rounded-2xl mb-6 relative">
-                    <img
+                    <NextImage
                       src={post.imageUrl}
                       alt={post.title}
                       className="w-full h-full object-cover hover:scale-105 transition duration-500"

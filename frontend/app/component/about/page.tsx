@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Terminal, Code, Cpu, Globe } from 'lucide-react';
 
 interface AboutData {

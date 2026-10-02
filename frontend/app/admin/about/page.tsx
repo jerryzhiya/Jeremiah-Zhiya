@@ -15,13 +15,14 @@ interface AboutFormData {
 export default function AdminAboutPage() {
   const [formData, setFormData] = useState<AboutFormData>({
     name: 'Jeremiah Zhiya',
-    title: 'Full-Stack Software Engineer building scalable systems and modern web platforms.',
+    title: 'Full-Stack & DevOps Engineer building scalable web applications and automated CI/CD pipelines.',
     location: 'Based in Nigeria • Remote Worldwide',
-    bio: 'I specialize in building full-stack applications using Next.js, Express, TypeScript, and MongoDB/Prisma. My focus is on writing clean, maintainable architecture and engineering seamless end-to-end digital experiences.',
-    secondaryBio: 'Based in Nigeria and working with clients worldwide, I turn complex business requirements into robust digital infrastructure.',
+    bio: 'I specialize in building full-stack web applications using Next.js, Express, TypeScript, and Prisma. My focus is on maintainable architecture, containerized deployments with Docker, and automated CI/CD workflows using GitHub Actions.',
+    secondaryBio: 'Based in Nigeria and working with clients worldwide, I turn complex technical requirements into high-performance digital systems and infrastructure.',
   });
 
   const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Fetch current About profile data on load
@@ -53,34 +54,39 @@ export default function AdminAboutPage() {
 
   // Send updated data to backend on submit
   const handleSave = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
+    setStatus('');
+    setError('');
 
-  try {
-    const res = await fetch('https://jeremiah-zhiya.onrender.com/api/about', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch('https://jeremiah-zhiya.onrender.com/api/about', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!res.ok) {
-      // Parse the error message sent from your Express controller
-      const errorData = await res.json().catch(() => ({}));
-      console.error('Backend error response:', res.status, errorData);
-      throw new Error(errorData.message || `Server error: ${res.status}`);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server error: ${res.status}`);
+      }
+
+      setStatus('About section updated successfully!');
+      setTimeout(() => setStatus(''), 3000);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred while saving.');
+      }
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setStatus('About section updated successfully!');
-    setTimeout(() => setStatus(''), 3000);
-  } catch (err: any) {
-    console.error(err);
-    alert(`Failed to update About section: ${err.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
   return (
     <main className="max-w-4xl mx-auto px-6 pt-28 pb-16 text-[#1e2723] dark:text-[#e5e9e3] transition-colors duration-300">
       <div className="flex items-center gap-4 mb-8">
@@ -98,6 +104,12 @@ export default function AdminAboutPage() {
       {status && (
         <div className="mb-6 p-3 rounded-xl bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-bold text-center border border-green-200 dark:border-green-800">
           {status}
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-6 p-3 rounded-xl bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-bold text-center border border-red-200 dark:border-red-800">
+          {error}
         </div>
       )}
 
@@ -174,7 +186,7 @@ export default function AdminAboutPage() {
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center justify-center gap-2 bg-[#355843] hover:bg-[#284434] dark:bg-[#436e54] dark:hover:bg-[#355843] text-white px-6 py-3 rounded-xl font-medium text-sm transition"
+          className="flex items-center justify-center gap-2 bg-[#355843] hover:bg-[#284434] dark:bg-[#436e54] dark:hover:bg-[#355843] text-white px-6 py-3 rounded-xl font-medium text-sm transition disabled:opacity-50"
         >
           <Save className="w-4 h-4" /> {loading ? 'Saving Changes...' : 'Save About Profile'}
         </button>

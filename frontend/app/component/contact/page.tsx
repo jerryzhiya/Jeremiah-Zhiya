@@ -39,7 +39,7 @@ export default function ContactPage() {
           Get In Touch
         </h1>
         <p className="text-[#52635a] dark:text-[#a3b3a9] text-lg">
-          Have a project in mind or looking for a full-stack engineer? Let's talk.
+          Have a project in mind or looking for a full-stack engineer? Let&apos;s talk.
         </p>
       </div>
 
@@ -131,7 +131,7 @@ export default function ContactPage() {
 
           {status === 'success' && (
             <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium text-center">
-              Message sent successfully! I'll get back to you soon.
+              Message sent successfully! I&apos;ll get back to you soon.
             </p>
           )}
 

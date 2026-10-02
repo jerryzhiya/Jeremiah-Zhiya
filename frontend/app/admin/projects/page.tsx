@@ -30,7 +30,7 @@ export default function AdminProjectsPage() {
     title: '',
     slug: '',
     description: '',
-    category: 'CLIENT_WORK',
+    category: 'CLIENT_WORK' as Project['category'],
     techStack: '',
     liveUrl: '',
     githubUrl: '',
@@ -42,7 +42,7 @@ export default function AdminProjectsPage() {
     try {
       const res = await axios.get(`${API_URL}/projects`);
       setProjects(res.data);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to load projects:', err);
     } finally {
       setLoading(false);
@@ -50,7 +50,10 @@ export default function AdminProjectsPage() {
   };
 
   useEffect(() => {
-    fetchProjects();
+    const load = async () => {
+      await fetchProjects();
+    };
+    load();
   }, []);
 
   const handleEditClick = (project: Project) => {
@@ -119,7 +122,7 @@ export default function AdminProjectsPage() {
 
       cancelEdit();
       fetchProjects();
-    } catch (err) {
+    } catch (_err: unknown) {
       alert(editingId ? 'Failed to update project' : 'Failed to create project');
     }
   };
@@ -133,7 +136,7 @@ export default function AdminProjectsPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchProjects();
-    } catch (err) {
+    } catch (_err: unknown) {
       alert('Failed to delete project');
     }
   };
@@ -192,7 +195,7 @@ export default function AdminProjectsPage() {
             <label className="block text-xs font-bold uppercase mb-1">Category</label>
             <select
               value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value as Project['category'] })}
               className="w-full px-3 py-2 text-sm rounded-xl border border-[#cbd4c9] bg-white"
             >
               <option value="CLIENT_WORK">Client Work</option>

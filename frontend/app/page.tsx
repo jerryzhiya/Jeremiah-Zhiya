@@ -68,9 +68,9 @@ export default function Home() {
 
       {/* Call To Action Banner */}
       <section className="rounded-3xl bg-[#355843] dark:bg-[#1e2d24] text-white p-8 sm:p-12 text-center shadow-lg border border-transparent dark:border-[#2f3e36] transition-colors">
-        <h2 className="text-2xl sm:text-4xl font-serif font-bold mb-4">You don't have to build it alone.</h2>
+        <h2 className="text-2xl sm:text-4xl font-serif font-bold mb-4">You don&apos;t have to build it alone.</h2>
         <p className="text-[#d5e0d9] dark:text-[#b4c7bb] max-w-xl mx-auto mb-8 text-sm md:text-base">
-          Let's discuss your project goals, technical requirements, and backend architecture.
+          Let&apos;s discuss your project goals, technical requirements, and backend architecture.
         </p>
         <Link
           href="/component/contact"

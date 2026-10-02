@@ -12,7 +12,11 @@ export default function SocialShare({ title, slug }: SocialShareProps) {
 
   useEffect(() => {
     // Construct full URL only after client mounts
-    setShareUrl(`${window.location.origin}/blog/${slug}`);
+    const handle = requestAnimationFrame(() => {
+      setShareUrl(`${window.location.origin}/blog/${slug}`);
+    });
+    return cancelAnimationFrame(handle);
+
   }, [slug]);
 
   // Don't construct full window URLs until mounted

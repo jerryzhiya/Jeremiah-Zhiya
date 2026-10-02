@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import SocialShare from '@/app/component/socials/page';
 import BlogInteractions from '@/app/component/blog/BlogInteraction';
+import NextImage from 'next/image';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -84,7 +85,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <main className="max-w-3xl mx-auto py-12 px-6 text-[#1e2723] dark:text-[#e5e9e3] transition-colors duration-300">
       {/* Featured Image */}
       {post.imageUrl && (
-        <img
+        <NextImage
           src={post.imageUrl}
           alt={post.title}
           className="w-full h-80 object-cover rounded-2xl mb-8 border border-transparent dark:border-[#2f3e36]"

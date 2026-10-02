@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, ArrowLeft, Edit2, X, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 
 interface BlogPost {
   id: string;
@@ -41,15 +42,18 @@ export default function AdminBlogPage() {
     try {
       const res = await axios.get(`${API_URL}/blog`);
       setPosts(res.data);
-    } catch (err) {
-      console.error('Failed to load blog posts:', err);
+    } catch (_err: unknown) {
+      console.error('Failed to load blog posts:', _err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPosts();
+    const load = async () => {
+      await fetchPosts();
+    };
+    load();
   }, []);
 
   const handleEditClick = (post: BlogPost) => {
@@ -116,7 +120,8 @@ export default function AdminBlogPage() {
 
       cancelEdit();
       fetchPosts();
-    } catch (err) {
+    } catch (err: unknown) {
+      console.error('Failed to submit blog post', err)
       alert(editingId ? 'Failed to update blog post' : 'Failed to create blog post');
     }
   };
@@ -130,7 +135,7 @@ export default function AdminBlogPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchPosts();
-    } catch (err) {
+    } catch (_err: unknown) {
       alert('Failed to delete blog post');
     }
   };
@@ -165,7 +170,11 @@ export default function AdminBlogPage() {
               type="text"
               required
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) => {
+                const title = e.target.value;
+                const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                setFormData({ ...formData, title, slug: editingId ? formData.slug : slug });
+              }}
               className="w-full px-3 py-2 text-sm rounded-xl border border-[#cbd4c9] bg-white"
             />
           </div>
@@ -265,7 +274,13 @@ export default function AdminBlogPage() {
               <div key={post.id} className="p-5 bg-white/60 border border-[#cbd4c9] rounded-2xl flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                   {post.imageUrl ? (
-                    <img src={post.imageUrl} alt={post.title} className="w-16 h-16 rounded-xl object-cover shrink-0 border border-[#cbd4c9]" />
+                    <NextImage
+                      src={post.imageUrl}
+                      alt={post.title}
+                      width={64}
+                      height={64}
+                      className="w-16 h-16 rounded-xl object-cover shrink-0 border border-[#cbd4c9]"
+                    />
                   ) : (
                     <div className="w-16 h-16 rounded-xl bg-[#e5e9e3] border border-[#cbd4c9] flex items-center justify-center shrink-0">
                       <ImageIcon className="w-6 h-6 text-[#52635a]" />

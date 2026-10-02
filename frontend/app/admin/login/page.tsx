@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/router'; // or 'next/navigation' in App Router
 import { Lock, Mail, Terminal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 export default function AdminLoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,9 +27,14 @@ export default function AdminLoginPage() {
       localStorage.setItem('admin_token', response.data.token);
 
       // Redirect to admin hub
-      window.location.href = '/admin/dashboard';
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      router.push('/admin/dashboard');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+setError(err.message);
+      } else {
+        setError('Login failed. Please check your credentials.')
+      }
+      
     } finally {
       setLoading(false);
     }
