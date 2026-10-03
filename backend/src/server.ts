@@ -58,7 +58,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/about', aboutRoutes);
-app.use('api/testimonials', testimonialRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 // Global Error Handler & Terminal Logger
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
