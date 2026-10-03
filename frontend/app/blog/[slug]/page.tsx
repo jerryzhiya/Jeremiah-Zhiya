@@ -10,10 +10,14 @@ interface BlogPostPageProps {
   }>;
 }
 
+// 1. Define your Next.js Frontend URL (Replace with your actual domain or Vercel URL)
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://jeremiah-zhiya.vercel.app';
+const API_URL = 'https://jeremiah-zhiya.onrender.com';
+
 async function getBlogPost(slug: string) {
   try {
-    const res = await fetch(`https://jeremiah-zhiya.onrender.com/api/blog/${slug}`, {
-      cache: 'no-store', // Ensures fresh data on request
+    const res = await fetch(`${API_URL}/api/blog/${slug}`, {
+      cache: 'no-store',
     });
 
     if (!res.ok) return null;
@@ -24,7 +28,6 @@ async function getBlogPost(slug: string) {
   }
 }
 
-// Dynamic Open Graph & Twitter Metadata Generator
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPost(slug);
@@ -35,14 +38,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  // Ensure image URL is absolute for social platforms
   const imageUrl = post.imageUrl
     ? post.imageUrl.startsWith('http')
       ? post.imageUrl
-      : `https://jeremiah-zhiya.onrender.com${post.imageUrl}`
-    : 'https://jeremiah-zhiya.onrender.com/default-og-image.jpg'; // Fallback image
+      : `${API_URL}${post.imageUrl}`
+    : `${SITE_URL}/default-og-image.jpg`;
 
   const description = post.summary || post.content?.slice(0, 160) || 'Blog post by Jeremiah Zhiya';
+  const fullPostUrl = `${SITE_URL}/blog/${slug}`;
 
   return {
     title: `${post.title} | Jeremiah Zhiya`,
@@ -50,7 +53,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     openGraph: {
       title: post.title,
       description: description,
-      url: `https://jeremiah-zhiya.onrender.com/blog/${slug}`,
+      url: fullPostUrl,
       siteName: 'Jeremiah Zhiya Portfolio',
       images: [
         {
@@ -81,15 +84,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const fullPostUrl = `${SITE_URL}/blog/${post.slug}`;
+
   return (
     <main className="max-w-3xl mx-auto py-12 px-6 text-[#1e2723] dark:text-[#e5e9e3] transition-colors duration-300">
       {/* Featured Image */}
       {post.imageUrl && (
-        <NextImage
-          src={post.imageUrl}
-          alt={post.title}
-          className="w-full h-80 object-cover rounded-2xl mb-8 border border-transparent dark:border-[#2f3e36]"
-        />
+        <div className="w-full h-80 relative overflow-hidden rounded-2xl mb-8 border border-transparent dark:border-[#2f3e36]">
+          <NextImage
+            src={post.imageUrl}
+            alt={post.title}
+            fill
+            className="object-cover object-top"
+          />
+        </div>
       )}
 
       {/* Header Info */}
@@ -121,9 +129,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {post.content}
       </div>
 
-      {/* Social Sharing Component */}
+      {/* Social Sharing Component with Absolute URL */}
       <div className="mb-10">
-        <SocialShare title={post.title} slug={post.slug} />
+        <SocialShare title={post.title} url={fullPostUrl} />
       </div>
 
       {/* Likes and Comments Component */}

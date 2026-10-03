@@ -43,7 +43,7 @@ export default function BlogPage() {
           <BookOpen className="w-10 h-10 text-[#43574b] dark:text-[#63a375] mx-auto mb-3" />
           <h3 className="text-lg font-bold text-[#1c2420] dark:text-[#e5e9e3]">No articles published yet</h3>
           <p className="text-xs text-[#52635a] dark:text-[#a3b3a9] mt-1">
-            Check back soon or publish an article from your admin hub.
+            Check back soon.....
           </p>
         </div>
       ) : (
@@ -62,11 +62,13 @@ export default function BlogPage() {
               >
                 {/* Cover Image */}
                 {post.imageUrl && (
-                  <div className="w-full h-48 sm:h-64 overflow-hidden rounded-2xl mb-6 relative">
+                  <div className="w-full h-56 sm:h-64 md:h-80 relative overflow-hidden rounded-2xl mb-6">
                     <NextImage
                       src={post.imageUrl}
                       alt={post.title}
-                      className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover object-top transition-transform duration-500 hover:scale-105"
                     />
                   </div>
                 )}

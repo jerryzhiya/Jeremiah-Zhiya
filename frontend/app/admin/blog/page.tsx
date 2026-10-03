@@ -135,7 +135,7 @@ export default function AdminBlogPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchPosts();
-    } catch (_err: unknown) {
+    } catch {
       alert('Failed to delete blog post');
     }
   };

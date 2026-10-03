@@ -8,6 +8,7 @@ import blogRoutes from './routes/blogRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import  aboutRoutes from './routes/aboutRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/about', aboutRoutes);
+app.use('api/testimonials', testimonialRoutes);
 
 // Global Error Handler & Terminal Logger
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

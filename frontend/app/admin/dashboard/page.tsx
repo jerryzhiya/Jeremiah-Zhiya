@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { UserCheck, Wrench, ArrowRight, FileText, FolderGit2 } from 'lucide-react';
+import { UserCheck, Wrench, ArrowRight, FileText, FolderGit2, MessageSquareQuote } from 'lucide-react';
 
 export default function AdminDashboard() {
   return (
@@ -11,7 +11,7 @@ export default function AdminDashboard() {
           Admin Management Panel
         </h1>
         <p className="text-sm text-[#52635a] dark:text-[#a3b3a9]">
-          Manage your portfolio content, technical skill sets, dynamic blog, and project showcases.
+          Manage your portfolio content, technical skill sets, dynamic blog, project showcases, and testimonials.
         </p>
       </div>
 
@@ -101,6 +101,28 @@ export default function AdminDashboard() {
             className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
           >
             <span>Manage Projects</span>
+            <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
+          </Link>
+        </div>
+
+        {/* 5. TESTIMONIALS CARD */}
+        <div className="p-6 bg-[#e5e9e3] dark:bg-[#1a231e] rounded-2xl border border-[#cbd4c9] dark:border-[#2f3e36] flex flex-col justify-between transition-colors">
+          <div>
+            <div className="flex items-center gap-3 mb-3 text-[#355843] dark:text-[#63a375]">
+              <MessageSquareQuote className="w-6 h-6" />
+              <h2 className="text-xl font-bold text-[#1c2420] dark:text-[#e5e9e3]">
+                Client Testimonials
+              </h2>
+            </div>
+            <p className="text-sm text-[#52635a] dark:text-[#a3b3a9] mb-6 leading-relaxed">
+              Add client endorsements, edit ratings and roles, or manage feedback displayed on your site.
+            </p>
+          </div>
+          <Link
+            href="/admin/testimonials"
+            className="inline-flex items-center justify-between w-full px-5 py-3 rounded-xl bg-white dark:bg-[#243029] text-[#1c2420] dark:text-[#e5e9e3] font-medium text-sm border border-[#cbd4c9] dark:border-[#2f3e36] hover:bg-[#d8e0d5] dark:hover:bg-[#2d3c33] transition"
+          >
+            <span>Manage Testimonials</span>
             <ArrowRight className="w-4 h-4 text-[#355843] dark:text-[#63a375]" />
           </Link>
         </div>

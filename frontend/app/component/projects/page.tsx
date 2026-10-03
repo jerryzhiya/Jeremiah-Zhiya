@@ -110,12 +110,13 @@ export default function ProjectsPage() {
               <div>
                 {/* Image Banner */}
                 {project.imageUrl && (
-                  <div className="w-full h-48 sm:h-56 overflow-hidden rounded-2xl mb-6 relative bg-[#cbd6c8] dark:bg-[#28352e]">
+                  <div className="w-full h-56 sm:h-64 md:h-80 lg:h-96 relative overflow-hidden rounded-2xl mb-6">
                     <NextImage
                       src={project.imageUrl}
                       alt={project.title}
-                      className="w-full h-full object-cover hover:scale-105 transition duration-500"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover object-top transition-transform duration-500 hover:scale-105"
                     />
                   </div>
                 )}

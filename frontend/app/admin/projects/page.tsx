@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, ArrowLeft, Edit2, X, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 
 interface Project {
   id: string;
@@ -122,7 +123,8 @@ export default function AdminProjectsPage() {
 
       cancelEdit();
       fetchProjects();
-    } catch (_err: unknown) {
+    } catch (err: unknown) {
+      console.error('Failed to upload create project', err)
       alert(editingId ? 'Failed to update project' : 'Failed to create project');
     }
   };
@@ -136,7 +138,8 @@ export default function AdminProjectsPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchProjects();
-    } catch (_err: unknown) {
+    } catch (err: unknown) {
+      console.error('Failed to delete project', err);
       alert('Failed to delete project');
     }
   };
@@ -284,7 +287,7 @@ export default function AdminProjectsPage() {
               <div key={project.id} className="p-5 bg-white/60 border border-[#cbd4c9] rounded-2xl flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                   {project.imageUrl ? (
-                    <img src={project.imageUrl} alt={project.title} className="w-16 h-16 rounded-xl object-cover shrink-0 border border-[#cbd4c9]" />
+                    <NextImage src={project.imageUrl} alt={project.title} className="w-16 h-16 rounded-xl object-cover shrink-0 border border-[#cbd4c9]" />
                   ) : (
                     <div className="w-16 h-16 rounded-xl bg-[#e5e9e3] border border-[#cbd4c9] flex items-center justify-center shrink-0">
                       <ImageIcon className="w-6 h-6 text-[#52635a]" />

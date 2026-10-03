@@ -20,8 +20,6 @@ export default function AboutPage() {
     secondaryBio: 'Based in Nigeria and working with clients worldwide, I turn complex business requirements into robust digital infrastructure.',
   });
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
@@ -34,8 +32,6 @@ export default function AboutPage() {
         }
       } catch (err) {
         console.error('Failed to fetch dynamic about section:', err);
-      } finally {
-        setLoading(false);
       }
     };
 

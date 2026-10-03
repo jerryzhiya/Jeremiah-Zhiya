@@ -75,3 +75,15 @@ model About {
   updatedAt    DateTime @updatedAt
 }
 
+model Testimonial {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  role        String   // e.g. "Founder & CEO at Company"
+  content     String
+  avatarUrl   String?
+  rating      Int      @default(5)
+  isFeatured  Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

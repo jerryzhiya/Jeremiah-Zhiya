@@ -1,26 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
 interface SocialShareProps {
   title: string;
-  slug: string;
+  url: string;
 }
 
-export default function SocialShare({ title, slug }: SocialShareProps) {
-  const [shareUrl, setShareUrl] = useState('');
-
-  useEffect(() => {
-    // Construct full URL only after client mounts
-    const handle = requestAnimationFrame(() => {
-      setShareUrl(`${window.location.origin}/blog/${slug}`);
-    });
-    return cancelAnimationFrame(handle);
-
-  }, [slug]);
-
-  // Don't construct full window URLs until mounted
-  const encodedUrl = encodeURIComponent(shareUrl || `/blog/${slug}`);
+export default function SocialShare({ title, url }: SocialShareProps) {
+  const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 
   const shareLinks = {
