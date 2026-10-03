@@ -3,7 +3,16 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Sparkles, Send, Hammer, Code2 } from 'lucide-react';
+import { 
+  ArrowUpRight, 
+  Sparkles, 
+  Send, 
+  Hammer, 
+  Code2, 
+  FileText, 
+  Download, 
+  CheckCircle2 
+} from 'lucide-react';
 
 export default function Home() {
   return (
@@ -95,7 +104,7 @@ export default function Home() {
       </section>
 
       {/* Quick-Look Gateway Grid */}
-      <section className="mb-20 sm:mb-28 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="mb-16 sm:mb-20 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Skills Teaser */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col justify-between transition-transform hover:-translate-y-1">
           <div>
@@ -159,6 +168,47 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Resume / CV Download Card */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mb-20 sm:mb-28 bg-[#dbe3d8] dark:bg-[#1a231e] rounded-3xl p-6 sm:p-8 border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm"
+      >
+        <div className="flex items-start gap-4">
+          <div className="p-3.5 rounded-2xl bg-[#355843]/10 dark:bg-[#436e54]/20 text-[#355843] dark:text-[#63a375] shrink-0">
+            <FileText className="w-8 h-8" />
+          </div>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#1c2420] dark:text-[#e5e9e3] mb-1">
+              Curriculum Vitae
+            </h2>
+            <p className="text-xs sm:text-sm text-[#52635a] dark:text-[#a3b3a9] mb-3">
+              Explore my technical stack, commercial experience, and engineering background.
+            </p>
+            <div className="flex flex-wrap gap-2 text-xs text-[#355843] dark:text-[#63a375] font-medium">
+              <span className="inline-flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Node.js & React
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Express & Prisma
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Full-Stack Architecture
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <Link
+          href="/resume"
+          className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#355843] dark:bg-[#436e54] hover:bg-[#284434] dark:hover:bg-[#355843] text-white font-medium text-sm transition shadow-md shrink-0"
+        >
+          <Download className="w-4 h-4" /> View Resume
+        </Link>
+      </motion.section>
 
       {/* Call To Action Banner */}
       <section className="rounded-3xl bg-[#355843] dark:bg-[#1e2d24] text-white p-8 sm:p-12 text-center shadow-lg border border-transparent dark:border-[#2f3e36] transition-colors relative overflow-hidden">

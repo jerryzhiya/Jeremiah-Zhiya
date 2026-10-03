@@ -27,9 +27,9 @@ export default async function TestimonialsPage() {
   return (
     <section className="max-w-6xl mx-auto px-4 py-16">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">Coming Soon</h1>
+        <h1 className="text-4xl font-bold tracking-tight mb-4">Testimonials</h1>
         <p className="text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto">
-          Stay tuned......
+          Testimonials from clients
         </p>
       </div>
 
