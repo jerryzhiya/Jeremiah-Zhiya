@@ -23,7 +23,7 @@ export default function AdminTestimonialsPage() {
       const uploadData = new FormData();
       uploadData.append('file', file);
 
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('admin_token');
       const res = await fetch('https://jeremiah-zhiya.onrender.com/api/testimonials/upload', {
         method: 'POST',
         headers: {
@@ -51,7 +51,7 @@ export default function AdminTestimonialsPage() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('admin_token');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/testimonials`, {
         method: 'POST',
         headers: {
