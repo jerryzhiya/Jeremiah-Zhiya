@@ -6,7 +6,7 @@ import {
   deleteTestimonial,
 } from '../controllers/testimonialController.js';
 import { requireAdmin } from '../middleware/authMiddleware.js';
-import { upload } from '../middleware/uploadMiddleware.js'; // Import your upload middleware
+import { isCloudinaryConfigured, upload } from '../middleware/uploadMiddleware.js';
 
 const router: Router = express.Router();
 
@@ -14,7 +14,15 @@ const router: Router = express.Router();
 router.get('/', getTestimonials);
 
 // Image upload route (used by admin form on laptop/phone)
-router.post('/upload', requireAdmin, upload.single('file'), (req, res) => {
+router.post('/upload', requireAdmin, (req, res, next) => {
+  if (!isCloudinaryConfigured) {
+    return res.status(500).json({
+      error: 'Cloudinary is not configured on the server. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to the backend environment.',
+    });
+  }
+
+  next();
+}, upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file provided' });
@@ -23,6 +31,7 @@ router.post('/upload', requireAdmin, upload.single('file'), (req, res) => {
     // req.file.path contains the public Cloudinary image URL
     res.status(200).json({ url: req.file.path });
   } catch (error) {
+    console.error('Testimonial upload failed:', error);
     res.status(500).json({ error: 'Image upload failed' });
   }
 });
