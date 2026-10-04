@@ -34,21 +34,27 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: 'Post Not Found | Jeremiah Zhiya',
+      title: 'Post Not Found',
     };
   }
 
-  const imageUrl = post.imageUrl
-    ? post.imageUrl.startsWith('http')
-      ? post.imageUrl
-      : `${API_URL}${post.imageUrl}`
-    : `${SITE_URL}/default-og-image.jpg`;
+  // 1. If the blog post has a Cloudinary image, format it; otherwise fall back to profile image
+  let blogImageUrl = `${SITE_URL}/preview.jpeg`;
+
+  if (post.imageUrl) {
+    if (post.imageUrl.includes('res.cloudinary.com')) {
+      // Formats Cloudinary image to ideal Open Graph dimensions (1200x630)
+      blogImageUrl = post.imageUrl.replace('/upload/', '/upload/c_fill,w_1200,h_630,g_auto,f_jpg/');
+    } else if (post.imageUrl.startsWith('http')) {
+      blogImageUrl = post.imageUrl;
+    }
+  }
 
   const description = post.summary || post.content?.slice(0, 160) || 'Blog post by Jeremiah Zhiya';
   const fullPostUrl = `${SITE_URL}/blog/${slug}`;
 
   return {
-    title: `${post.title} | Jeremiah Zhiya`,
+    title: post.title,
     description: description,
     openGraph: {
       title: post.title,
@@ -57,10 +63,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       siteName: 'Jeremiah Zhiya Portfolio',
       images: [
         {
-          url: imageUrl,
+          url: blogImageUrl, // Uses the blog post's Cloudinary image
           width: 1200,
           height: 630,
           alt: post.title,
+          type: 'image/jpeg',
         },
       ],
       type: 'article',
@@ -71,7 +78,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       card: 'summary_large_image',
       title: post.title,
       description: description,
-      images: [imageUrl],
+      images: [blogImageUrl],
     },
   };
 }
