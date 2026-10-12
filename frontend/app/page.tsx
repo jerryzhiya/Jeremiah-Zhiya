@@ -1,8 +1,7 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import PaystackWidget from '@/app/component/paystackWidget';
+import HomeMotion from '@/app/component/HomeMotion';
 import { 
   ArrowUpRight, 
   Sparkles, 
@@ -19,12 +18,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
       {/* Hero Section */}
       <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16 sm:mb-20">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-7 text-center lg:text-left"
-        >
+        <HomeMotion variant="hero-copy" className="lg:col-span-7 text-center lg:text-left">
           <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-medium text-[#2d4b39] dark:text-[#a3c9b1] bg-[#d3dcd0] dark:bg-[#28352e] mb-6 transition-colors">
             <Sparkles className="w-3.5 h-3.5" /> Shoemaker Turned Software Engineer
           </span>
@@ -48,13 +42,11 @@ export default function Home() {
               Explore Projects
             </Link>
           </div>
-        </motion.div>
+        </HomeMotion>
 
         {/* Hero Profile Card */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <HomeMotion
+          variant="profile-card"
           className="lg:col-span-5 bg-[#dbe3d8] dark:bg-[#1a231e] rounded-3xl p-6 shadow-sm border border-[#c8d4c4] dark:border-[#2f3e36] transition-colors relative overflow-hidden"
         >
           <div className="w-full h-64 sm:h-80 rounded-2xl mb-6 overflow-hidden relative shadow-inner">
@@ -84,7 +76,7 @@ export default function Home() {
           <p className="text-[#52635a] dark:text-[#a3b3a9] text-xs leading-relaxed transition-colors">
             Building reliable full-stack applications with Node.js, React, Prisma, and robust backend logic out of Abuja, Nigeria.
           </p>
-        </motion.div>
+        </HomeMotion>
       </header>
 
       {/* Craftsman's Approach Snapshot */}
@@ -105,7 +97,6 @@ export default function Home() {
 
       {/* Quick-Look Gateway Grid */}
       <section className="mb-16 sm:mb-20 grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Skills Teaser */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col justify-between transition-transform hover:-translate-y-1">
           <div>
             <span className="text-xs font-semibold text-[#355843] dark:text-[#63a375] uppercase tracking-wider block mb-2">
@@ -126,7 +117,6 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Projects Teaser */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col justify-between transition-transform hover:-translate-y-1">
           <div>
             <span className="text-xs font-semibold text-[#355843] dark:text-[#63a375] uppercase tracking-wider block mb-2">
@@ -147,7 +137,6 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Blog Teaser */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#dbe3d8] dark:bg-[#1a231e] border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col justify-between transition-transform hover:-translate-y-1">
           <div>
             <span className="text-xs font-semibold text-[#355843] dark:text-[#63a375] uppercase tracking-wider block mb-2">
@@ -170,12 +159,9 @@ export default function Home() {
       </section>
 
       {/* Resume / CV Download Card */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-20 sm:mb-28 bg-[#dbe3d8] dark:bg-[#1a231e] rounded-3xl p-6 sm:p-8 border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm"
+      <HomeMotion
+        variant="resume-card"
+        className="mb-16 sm:mb-20 bg-[#dbe3d8] dark:bg-[#1a231e] rounded-3xl p-6 sm:p-8 border border-[#c8d4c4] dark:border-[#2f3e36] flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm"
       >
         <div className="flex items-start gap-4">
           <div className="p-3.5 rounded-2xl bg-[#355843]/10 dark:bg-[#436e54]/20 text-[#355843] dark:text-[#63a375] shrink-0">
@@ -208,7 +194,10 @@ export default function Home() {
         >
           <Download className="w-4 h-4" /> View Resume
         </Link>
-      </motion.section>
+      </HomeMotion>
+
+      {/* GlitterTech Online Payment Gateway Component */}
+      <PaystackWidget />
 
       {/* Call To Action Banner */}
       <section className="rounded-3xl bg-[#355843] dark:bg-[#1e2d24] text-white p-8 sm:p-12 text-center shadow-lg border border-transparent dark:border-[#2f3e36] transition-colors relative overflow-hidden">
