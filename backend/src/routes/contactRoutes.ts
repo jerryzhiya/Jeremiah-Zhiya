@@ -14,11 +14,12 @@ router.post('/', async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
-      secure: false, // TLS on port 587
+      secure: true, // MUST be true for port 465 (SSL)
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 10000, // 10 seconds timeout safeguard
     });
 
     await transporter.sendMail({
