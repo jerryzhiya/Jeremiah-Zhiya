@@ -1,9 +1,8 @@
 import express, { Router } from 'express';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const router: Router = express.Router();
-
-//nodemailer setup
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body;
@@ -13,21 +12,10 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: Number(process.env.EMAIL_PORT),
-      secure: true, // MUST be true for port 465 (SSL)
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      connectionTimeout: 10000, // 10 seconds timeout safeguard
-    });
-
-    await transporter.sendMail({
-      from: `"${name}" <${process.env.EMAIL_USER}>`,
+    const data = await resend.emails.send({
+      from: 'Portfolio Contact <onboarding@resend.dev>', // Use your verified domain later if you have one
+      to: [process.env.EMAIL_USER || 'your-email@gmail.com'],
       replyTo: email,
-      to: process.env.EMAIL_USER,
       subject: `New Portfolio Contact Message from ${name}`,
       html: `
         <div style="font-family: sans-serif; line-height: 1.5; color: #1c2420;">
@@ -41,9 +29,9 @@ router.post('/', async (req, res) => {
       `,
     });
 
-    return res.status(200).json({ success: true, message: 'Message sent!' });
+    return res.status(200).json({ success: true, message: 'Message sent!', data });
   } catch (error) {
-    console.error('Nodemailer Error:', error);
+    console.error('Resend Error:', error);
     return res.status(500).json({ error: 'Failed to send message.' });
   }
 });
