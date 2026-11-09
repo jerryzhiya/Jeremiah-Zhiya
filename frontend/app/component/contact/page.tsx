@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Mail, MapPin, Send, Loader2 } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -14,7 +16,7 @@ export default function ContactPage() {
     setStatus('loading');
 
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

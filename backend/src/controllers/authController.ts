@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
+import { getJwtSecret } from '../config/jwt.js';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +34,7 @@ export const loginAdmin: RequestHandler = asyncHandler(
     // Include normalized uppercase role in JWT payload
     const token = jwt.sign(
       { id: user.id, email: user.email, role: 'ADMIN' },
-      process.env.JWT_SECRET || 'secret_key_change_me',
+      getJwtSecret(),
       { expiresIn: '7d' }
     );
 

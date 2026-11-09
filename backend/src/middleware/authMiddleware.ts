@@ -1,14 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { getJwtSecret } from '../config/jwt.js';
 
 export interface AuthRequest extends Request {
   adminId?: string;
-  role?: string;
-}
-
-interface JwtPayload {
-  id: string;
-  email?: string;
   role?: string;
 }
 
@@ -29,13 +24,14 @@ export const requireAdmin = (
   }
 
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'secret_key_change_me'
-    ) as JwtPayload;
+    const decoded = jwt.verify(token, getJwtSecret());
+    if (typeof decoded === 'string' || typeof decoded.id !== 'string') {
+      res.status(403).json({ message: 'Invalid or expired access token' });
+      return;
+    }
 
     // Reject non-admin tokens (handles case-insensitive role check)
-    const normalizedRole = decoded.role?.toUpperCase();
+    const normalizedRole = typeof decoded.role === 'string' ? decoded.role.toUpperCase() : undefined;
     if (normalizedRole !== 'ADMIN') {
       res.status(403).json({ message: 'Forbidden: Admin access required' });
       return;

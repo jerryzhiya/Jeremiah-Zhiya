@@ -9,8 +9,10 @@ import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import  aboutRoutes from './routes/aboutRoutes.js';
 import testimonialRoutes from './routes/testimonialRoutes.js';
+import { getJwtSecret } from './config/jwt.js';
 
 dotenv.config();
+getJwtSecret();
 
 const app = express();
 

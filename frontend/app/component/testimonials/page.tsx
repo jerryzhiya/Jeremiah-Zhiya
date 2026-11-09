@@ -1,5 +1,7 @@
 import NextImage from 'next/image';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
+
 interface Testimonial {
   id: string;
   name: string;
@@ -10,15 +12,13 @@ interface Testimonial {
 }
 
 async function getTestimonials(): Promise<Testimonial[]> {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/testimonials`, {
-      cache: 'no-store',
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
+  const res = await fetch(`${API_BASE_URL}/testimonials`, {
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch testimonials: ${res.status}`);
   }
+  return res.json();
 }
 
 export default async function TestimonialsPage() {

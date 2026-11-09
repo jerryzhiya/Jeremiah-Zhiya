@@ -12,7 +12,7 @@ declare global {
         email: string;
         amount: number;
         ref: string;
-        metadata?: Record<string, any>;
+        metadata?: Record<string, unknown>;
         callback: (response: { reference: string }) => void;
         onClose: () => void;
       }) => {

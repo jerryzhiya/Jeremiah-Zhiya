@@ -1,6 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
 
 interface Testimonial {
   id: string;
@@ -27,23 +30,31 @@ export default function AdminTestimonialsPage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
 
-  // 1. Fetch all testimonials on mount
-  const fetchTestimonials = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api'}/testimonials`);
-      if (res.ok) {
-        const data = await res.json();
-        setTestimonials(data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch testimonials', err);
-    } finally {
-      setFetching(false);
+  const fetchTestimonials = async (): Promise<Testimonial[]> => {
+    const res = await fetch(`${API_BASE_URL}/testimonials`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch testimonials: ${res.status}`);
     }
+    return res.json();
   };
 
   useEffect(() => {
-    fetchTestimonials();
+    let active = true;
+
+    fetchTestimonials()
+      .then((data) => {
+        if (active) setTestimonials(data);
+      })
+      .catch((err: unknown) => {
+        console.error('Failed to fetch testimonials', err);
+      })
+      .finally(() => {
+        if (active) setFetching(false);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   // 2. Handle image upload to Cloudinary via backend
@@ -85,7 +96,7 @@ export default function AdminTestimonialsPage() {
     setLoading(true);
 
     const token = localStorage.getItem('admin_token');
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
+    const baseUrl = API_BASE_URL;
     const isEditing = Boolean(editingId);
 
     const endpoint = isEditing ? `${baseUrl}/testimonials/${editingId}` : `${baseUrl}/testimonials`;
@@ -104,7 +115,9 @@ export default function AdminTestimonialsPage() {
       if (res.ok) {
         alert(isEditing ? 'Testimonial updated!' : 'Testimonial created!');
         resetForm();
-        fetchTestimonials();
+        fetchTestimonials()
+          .then(setTestimonials)
+          .catch((err: unknown) => console.error('Failed to refresh testimonials', err));
       } else {
         alert('Failed to save testimonial');
       }
@@ -135,7 +148,7 @@ export default function AdminTestimonialsPage() {
 
     try {
       const token = localStorage.getItem('admin_token');
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jeremiah-zhiya.onrender.com/api';
+      const baseUrl = API_BASE_URL;
 
       const res = await fetch(`${baseUrl}/testimonials/${id}`, {
         method: 'DELETE',
@@ -256,9 +269,11 @@ export default function AdminTestimonialsPage() {
             >
               <div className="flex items-center gap-4">
                 {item.avatarUrl && (
-                  <img
+                  <Image
                     src={item.avatarUrl}
                     alt={item.name}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full object-cover border border-[#cbd4c9] dark:border-[#2f3e36]"
                   />
                 )}
