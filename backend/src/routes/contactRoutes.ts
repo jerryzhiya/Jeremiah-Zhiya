@@ -2,7 +2,6 @@ import express, { Router } from 'express';
 import { Resend } from 'resend';
 
 const router: Router = express.Router();
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body;
@@ -12,8 +11,11 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    // Initialize Resend inside the route handler
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     const data = await resend.emails.send({
-      from: 'Portfolio Contact <onboarding@resend.dev>', // Use your verified domain later if you have one
+      from: 'Portfolio Contact <onboarding@resend.dev>',
       to: [process.env.EMAIL_USER || 'your-email@gmail.com'],
       replyTo: email,
       subject: `New Portfolio Contact Message from ${name}`,
